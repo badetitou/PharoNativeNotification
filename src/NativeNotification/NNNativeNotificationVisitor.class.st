@@ -96,7 +96,7 @@ NNNativeNotificationVisitor >> visitWindows: aPlatform [
 
 	| directory |
 	directory := (FileLocator temp / 'PharoNativeNotification')
-		             ensureCreateDirectory.
+		             ensureDeleteAll; ensureCreateDirectory.
 	self configWin.
 	OSWSWinProcess new
 		shellCommand: (String streamContents: [ :stream | 
