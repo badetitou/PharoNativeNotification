@@ -21,8 +21,7 @@ NNNativeNotificationVisitor >> buildWindowsNotificationCommand [
 
 	^ String streamContents: [ :stream | 
 		  stream
-		  <<
-			  '& { function Show-Notification {
+			  << '& { function Show-Notification {
     [cmdletbinding()]
     Param (
         [string]
@@ -43,11 +42,17 @@ NNNativeNotificationVisitor >> buildWindowsNotificationCommand [
     $SerializedXml.LoadXml($RawXml.OuterXml);
 
     $Toast = [Windows.UI.Notifications.ToastNotification]::new($SerializedXml);
-    $Toast.Tag = ''Pharo'';
-    $Toast.Group = ''Pharo'';
+    $Toast.Tag = ''';
+			  << notification creator;
+			  << ''';
+    $Toast.Group = ''';
+			  << notification creator;
+			  << ''';
     $Toast.ExpirationTime = [DateTimeOffset]::Now.AddMinutes(1);
 
-    $Notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(''Pharo'');
+    $Notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier(''';
+			  << notification creator;
+			  << ''');
     $Notifier.Show($Toast);
 };
 

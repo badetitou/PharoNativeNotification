@@ -3,10 +3,29 @@ Class {
 	#superclass : #OSPlatformVisitor,
 	#instVars : [
 		'title',
-		'text'
+		'text',
+		'creator'
 	],
 	#category : #NativeNotification
 }
+
+{ #category : #accessing }
+NNNativeNotification >> creator [
+
+	^ creator
+]
+
+{ #category : #accessing }
+NNNativeNotification >> creator: anObject [
+
+	creator := anObject
+]
+
+{ #category : #initialization }
+NNNativeNotification >> initialize [
+	super initialize.
+	creator := 'Pharo'
+]
 
 { #category : #accessing }
 NNNativeNotification >> text [

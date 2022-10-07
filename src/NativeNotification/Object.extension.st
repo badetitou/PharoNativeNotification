@@ -8,3 +8,13 @@ Object >> nativeInform: aString withText: aTextString [
 			 text: aTextString;
 			 yourself)
 ]
+
+{ #category : #'*NativeNotification' }
+Object >> nativeInform: aString withText: aTextString withCreator: aCreator [
+
+	NNNativeNotificationVisitor display: (NNNativeNotification new
+			 title: aString;
+			 text: aTextString;
+			 creator: aCreator;
+			 yourself)
+]
