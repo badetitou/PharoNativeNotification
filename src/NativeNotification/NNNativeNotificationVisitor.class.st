@@ -17,12 +17,12 @@ NNNativeNotificationVisitor class >> display: aNotification [
 ]
 
 { #category : #visiting }
-NNNativeNotificationVisitor >> buildWindowsCommand [
+NNNativeNotificationVisitor >> buildWindowsNotificationCommand [
 
 	^ String streamContents: [ :stream | 
 		  stream
 		  <<
-			  'start powershell -noprofil -command "& { function Show-Notification {
+			  '& { function Show-Notification {
     [cmdletbinding()]
     Param (
         [string]
@@ -59,7 +59,24 @@ Show-Notification -ToastTitle '''.
 				  << ' -ToastText ''';
 				  << notification text;
 				  << '''' ].
-		  stream << ' }"' ]
+		  stream << ' }' ]
+]
+
+{ #category : #visiting }
+NNNativeNotificationVisitor >> configWin [
+
+	| directory |
+	directory := (FileLocator temp / 'PharoNativeNotification')
+		             ensureCreateDirectory.
+	directory / 'ps-run.vbs' writeStreamDo: [ :stream | 
+		stream << 'Set objShell = CreateObject("Wscript.Shell")
+Set args = Wscript.Arguments
+For Each arg In args
+    objShell.Run("powershell -windowstyle hidden -executionpolicy bypass -noninteractive ""&"" ""''" & arg & "''"""),0
+Next
+' ].
+	directory / 'notification-script.ps1' writeStreamDo: [ :stream | 
+		stream << self buildWindowsNotificationCommand ]
 ]
 
 { #category : #accessing }
@@ -77,7 +94,17 @@ NNNativeNotificationVisitor >> notification: anObject [
 { #category : #visiting }
 NNNativeNotificationVisitor >> visitWindows: aPlatform [
 
+	| directory |
+	directory := (FileLocator temp / 'PharoNativeNotification')
+		             ensureCreateDirectory.
+	self configWin.
 	OSWSWinProcess new
-		shellCommand: self buildWindowsCommand;
+		shellCommand: (String streamContents: [ :stream | 
+					 stream
+						 << 'wscript "';
+						 << (directory / 'ps-run.vbs') pathString;
+						 << '" "';
+						 << (directory / 'notification-script.ps1') pathString;
+						 << '"' ]);
 		run
 ]
