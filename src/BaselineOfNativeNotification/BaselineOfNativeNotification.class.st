@@ -22,7 +22,7 @@ BaselineOfNativeNotification >> defineDependencies: spec [
 			'github://pharo-contributions/OSSubprocess:master/repository' ].
 	spec baseline: 'OSWinSubprocess' with: [ 
 		spec repository:
-			'github://pharo-contributions/OSWinSubprocess:master/repository' ]
+			'github://pharo-contributions/OSWinSubprocess:v1' ]
 ]
 
 { #category : #baselines }
