@@ -53,7 +53,13 @@ NNNativeNotificationVisitor >> buildWindowsCommand [
 
 Show-Notification -ToastTitle '''.
 		  stream << notification title ifNil: [ '' ].
-		  stream << ''' }"' ]
+		  stream << ''''.
+		  notification text ifNotNil: [ 
+			  stream
+				  << ' -ToastText ''';
+				  << notification text;
+				  << '''' ].
+		  stream << ' }"' ]
 ]
 
 { #category : #accessing }
