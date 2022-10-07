@@ -70,5 +70,8 @@ NNNativeNotificationVisitor >> notification: anObject [
 
 { #category : #visiting }
 NNNativeNotificationVisitor >> visitWindows: aPlatform [
-	LibC runCommand: self buildWindowsCommand
+
+	OSWSWinProcess new
+		shellCommand: self buildWindowsCommand;
+		run
 ]
