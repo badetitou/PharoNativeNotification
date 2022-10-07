@@ -97,6 +97,19 @@ NNNativeNotificationVisitor >> notification: anObject [
 ]
 
 { #category : #visiting }
+NNNativeNotificationVisitor >> visitUnix: aPlatform [
+
+	| args |
+	args := OrderedCollection new.
+	args add: notification title.
+	notification text ifNotNil: [ :text | args add: text ].
+	OSSUnixSubprocess new
+		command: 'notify-send';
+		arguments: args;
+		run
+]
+
+{ #category : #visiting }
 NNNativeNotificationVisitor >> visitWindows: aPlatform [
 
 	| directory |
