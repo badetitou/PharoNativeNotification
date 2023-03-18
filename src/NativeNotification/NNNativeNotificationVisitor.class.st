@@ -106,6 +106,7 @@ NNNativeNotificationVisitor >> visitUnix: aPlatform [
 	OSSUnixSubprocess new
 		command: 'notify-send';
 		arguments: args;
+		redirectStdout;
 		run
 ]
 
